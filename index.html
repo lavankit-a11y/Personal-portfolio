@@ -1,0 +1,175 @@
+<!doctype html>
+<html lang="<!-- figma:lang -->">
+  <head>
+    <!-- figma:head-start -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="preload"
+      as="image"
+      href="https://res.cloudinary.com/vwlr2h8r/image/upload/v1794764621/Contemplative_Computer_Beneath_the_Sunset.png"
+      fetchpriority="high"
+    />
+    <link
+      rel="preload"
+      as="image"
+      href="https://res.cloudinary.com/vwlr2h8r/image/upload/v1794764699/ChatGPT_Image_Sep_25_2026_04_58_29_PM.jpg"
+    />
+    <link
+      rel="prefetch"
+      as="video"
+      href="https://res.cloudinary.com/vwlr2h8r/video/upload/v1794765266/Old_Interface_UI.mp4"
+    />
+    <link
+      rel="prefetch"
+      as="image"
+      href="https://res.cloudinary.com/vwlr2h8r/image/upload/v1794768620/EDC_Sandbox_Visit_1_Interface.png"
+    />
+    <link rel="prefetch" as="image" href="https://res.cloudinary.com/vwlr2h8r/image/upload/v1794850773/Screenshot_2026-11-16_at_11.09.23_PM.png" />
+    <link rel="prefetch" as="image" href="https://res.cloudinary.com/vwlr2h8r/image/upload/v1794853909/Insight_1.png" />
+    <link rel="prefetch" as="image" href="https://res.cloudinary.com/vwlr2h8r/image/upload/v1794853911/Insight_2.png" />
+    <link rel="prefetch" as="image" href="https://res.cloudinary.com/vwlr2h8r/image/upload/v1794851116/Insight_3.png" />
+    <title><!-- figma:title --></title>
+    <!-- figma:head-end -->
+  </head>
+  <body>
+    <!-- figma:body-start -->
+    <script>
+      try {
+        var t = localStorage.getItem('case-study-theme')
+        if (t === 'dark' || (!t && matchMedia('(prefers-color-scheme: dark)').matches))
+          document.documentElement.classList.add('dark')
+      } catch (e) {}
+    </script>
+    <script>
+      // Fetch and decode portfolio media while Saturn is running. The homepage
+      // reveal waits for this promise, so images never pop in after transition.
+      ;(function () {
+        var hero = 'https://res.cloudinary.com/vwlr2h8r/image/upload/v1794764621/Contemplative_Computer_Beneath_the_Sunset.png'
+        var avatar = 'https://res.cloudinary.com/vwlr2h8r/image/upload/v1794764699/ChatGPT_Image_Sep_25_2026_04_58_29_PM.jpg'
+        var oldUI = 'https://res.cloudinary.com/vwlr2h8r/video/upload/v1794765266/Old_Interface_UI.mp4'
+        var edcVisit = 'https://res.cloudinary.com/vwlr2h8r/image/upload/v1794768620/EDC_Sandbox_Visit_1_Interface.png'
+        var delayCost = 'https://res.cloudinary.com/vwlr2h8r/image/upload/v1794850773/Screenshot_2026-11-16_at_11.09.23_PM.png'
+        var insight1 = 'https://res.cloudinary.com/vwlr2h8r/image/upload/v1794853909/Insight_1.png'
+        var insight2 = 'https://res.cloudinary.com/vwlr2h8r/image/upload/v1794853911/Insight_2.png'
+        var insight3 = 'https://res.cloudinary.com/vwlr2h8r/image/upload/v1794851116/Insight_3.png'
+        function imageReady(src) {
+          return new Promise(function (resolve) {
+            var image = new Image()
+            var finished = false
+            var done = function () {
+              if (finished) return
+              finished = true
+              resolve()
+            }
+            image.onload = function () {
+              if (image.decode) image.decode().catch(function () {}).finally(done)
+              else done()
+            }
+            image.onerror = done
+            window.setTimeout(done, 12000)
+            image.src = src
+          })
+        }
+        function videoReady(src) {
+          return new Promise(function (resolve) {
+            var video = document.createElement('video')
+            var finished = false
+            var done = function () {
+              if (finished) return
+              finished = true
+              video.removeAttribute('src')
+              video.load()
+              resolve()
+            }
+            video.preload = 'auto'
+            video.muted = true
+            video.playsInline = true
+            video.addEventListener('loadeddata', done, { once: true })
+            video.addEventListener('error', done, { once: true })
+            window.setTimeout(done, 12000)
+            video.src = src
+            video.load()
+          })
+        }
+        window.__portfolioAssetsReady = Promise.allSettled([
+          imageReady(hero),
+          imageReady(avatar),
+          imageReady(edcVisit),
+          imageReady(delayCost),
+          imageReady(insight1),
+          imageReady(insight2),
+          imageReady(insight3),
+          videoReady(oldUI),
+        ])
+      })()
+    </script>
+    <!--
+      Intro screen. Plain HTML/CSS so the stage is visible on the very first
+      paint; src/intro/boot.ts then mounts the three.js dither scene into it.
+      It only shows when a visit starts on the homepage, and never with reduced motion.
+    -->
+    <style>
+      #intro {
+        position: fixed; inset: 0; z-index: 100; transition: opacity 700ms ease-out;
+        /* Outside the stage: the page's normal background for the active theme. */
+        background: #ffffff; color: #010100;
+        /* Stage: never fills the screen. Width = min(70vw, 42vh, 460px), at least 240px; aspect 1.1. */
+        --fw: max(240px, min(70vw, 42vh, 460px));
+        --fh: calc(var(--fw) / 1.1);
+      }
+      html.dark #intro { background: #000000; color: #eeeeeb; }
+      #intro::before {
+        content: ""; position: absolute; inset: 0; pointer-events: none; opacity: 0.07; background: #1c1c1c;
+        -webkit-mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27220%27%20height%3D%27220%27%3E%3Cfilter%20id%3D%27n%27%20x%3D%270%27%20y%3D%270%27%20width%3D%27100%25%27%20height%3D%27100%25%27%20color-interpolation-filters%3D%27sRGB%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.9%27%20numOctaves%3D%273%27%20seed%3D%279%27%20stitchTiles%3D%27stitch%27/%3E%3CfeColorMatrix%20values%3D%270%200%200%200%200%20%200%200%200%200%200%20%200%200%200%200%200%20%201.6%200%200%200%20-0.300%27/%3E%3C/filter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23n%29%27/%3E%3C/svg%3E"); mask-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20width%3D%27220%27%20height%3D%27220%27%3E%3Cfilter%20id%3D%27n%27%20x%3D%270%27%20y%3D%270%27%20width%3D%27100%25%27%20height%3D%27100%25%27%20color-interpolation-filters%3D%27sRGB%27%3E%3CfeTurbulence%20type%3D%27fractalNoise%27%20baseFrequency%3D%270.9%27%20numOctaves%3D%273%27%20seed%3D%279%27%20stitchTiles%3D%27stitch%27/%3E%3CfeColorMatrix%20values%3D%270%200%200%200%200%20%200%200%200%200%200%20%200%200%200%200%200%20%201.6%200%200%200%20-0.300%27/%3E%3C/filter%3E%3Crect%20width%3D%27100%25%27%20height%3D%27100%25%27%20filter%3D%27url%28%23n%29%27/%3E%3C/svg%3E");
+        -webkit-mask-size: 220px 220px; mask-size: 220px 220px;
+        -webkit-mask-repeat: repeat; mask-repeat: repeat;
+      }
+      html.dark #intro::before { opacity: 0.08; background: #d6d6d6; }
+      /* Invisible frame for the particle scene; no box, no fade. Particles sit on the page background. */
+      #intro .intro-stage {
+        position: absolute; top: 50%; left: 50%; z-index: 1;
+        width: var(--fw); height: var(--fh); transform: translate(-50%, -50%);
+      }
+      #intro .intro-greeting {
+        position: absolute; top: calc(50% + min(142px, 16vh)); left: 50%; z-index: 2;
+        transform: translateX(-50%); white-space: nowrap;
+        font: 400 17px/1.4 "Open Runde", ui-sans-serif, system-ui, sans-serif;
+        color: currentColor;
+        opacity: 0; filter: blur(8px);
+        transition: opacity 500ms ease-out, filter 500ms ease-out;
+      }
+      #intro .intro-greeting.is-visible { opacity: 1; filter: blur(0); }
+      /* Loading line across the very top: left edge = 0%, right edge = 100%. */
+      #intro .intro-track {
+        position: absolute; top: 0; left: 0; right: 0; z-index: 2; height: 2px;
+        overflow: hidden; background: rgba(1, 1, 0, 0.08);
+      }
+      html.dark #intro .intro-track { background: rgba(238, 238, 235, 0.12); }
+      #intro .intro-fill { width: 100%; height: 100%; background: currentColor; transform: scaleX(0); transform-origin: left; }
+    </style>
+    <div id="intro" aria-hidden="true">
+      <div class="intro-stage" data-intro-stage></div>
+      <p class="intro-greeting" data-intro-greeting></p>
+      <div class="intro-track" role="progressbar" aria-label="Loading"><div class="intro-fill" data-intro-bar></div></div>
+    </div>
+    <script>
+      ;(function () {
+        var el = document.getElementById('intro')
+        var greeting = document.querySelector('[data-intro-greeting]')
+        var hour = new Date().getHours()
+        if (greeting) greeting.textContent =
+          hour < 12 ? 'Good morning there!' :
+          hour < 17 ? 'Good afternoon there!' :
+          'Good evening there!'
+        var onCaseStudy = location.hash.indexOf('#/work/') === 0
+        var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches
+        if (onCaseStudy || reduce) el.parentNode.removeChild(el)
+        else window.__introActive = true
+      })()
+    </script>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+    <!-- figma:body-end -->
+  </body>
+</html>

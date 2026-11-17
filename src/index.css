@@ -1,0 +1,364 @@
+@import "tailwindcss";
+@import "@fontsource/open-runde/400.css";
+@import "@fontsource/open-runde/500.css";
+@import "@fontsource/open-runde/600.css";
+@import "lenis/dist/lenis.css";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --noise-color: #1c1c1c;
+  --noise-opacity: 0.07;
+  /* Page backgrounds for each theme, used by the pixel theme transition. */
+  --page-light: #ffffff;
+  --page-dark: #000000;
+  --page: var(--page-light);
+  --ink: #000000;
+  --body: #808080;
+  --label: #808080;
+  --box: #f6f6f6;
+  --card: #f2f2f3;
+  --card-border: #e0e0e3;
+  --ph: #ececec;
+  --ph-text: #a3a3a3;
+  --line: #e6e6e6;
+  --pill: #ffffff;
+  --pill-border: #e6e6e6;
+  --btn: #000000;
+  --btn-text: #ffffff;
+  --stat: #000000;
+  --stat-ph: #1c1c1c;
+  --accent: #ff4d1a;
+  color-scheme: light;
+}
+
+.dark {
+  --noise-color: #d6d6d6;
+  --noise-opacity: 0.08;
+  --page: var(--page-dark);
+  --ink: #ffffff;
+  --body: #b5b5b5;
+  --label: #b5b5b5;
+  --box: #111111;
+  --card: #0f0f10;
+  --card-border: #1f1e1e;
+  --ph: #1a1a1a;
+  --ph-text: #5e5e5e;
+  --line: #1f1e1e;
+  --pill: #000000;
+  --pill-border: #1f1e1e;
+  --btn: #ffffff;
+  --btn-text: #000000;
+  --stat: #1f1f1f;
+  --stat-ph: #2a2a2a;
+  --accent: #ff5c2e;
+  color-scheme: dark;
+}
+
+@theme inline {
+  --font-sans: "Open Runde", ui-sans-serif, system-ui, sans-serif;
+  --color-page: var(--page);
+  --color-ink: var(--ink);
+  --color-body: var(--body);
+  --color-label: var(--label);
+  --color-box: var(--box);
+  --color-card: var(--card);
+  --color-card-border: var(--card-border);
+  --color-ph: var(--ph);
+  --color-ph-text: var(--ph-text);
+  --color-line: var(--line);
+  --color-pill: var(--pill);
+  --color-pill-border: var(--pill-border);
+  --color-btn: var(--btn);
+  --color-btn-text: var(--btn-text);
+  --color-stat: var(--stat);
+  --color-stat-ph: var(--stat-ph);
+  --color-accent: var(--accent);
+}
+
+@layer base {
+  body {
+    background: var(--page);
+    color: var(--body);
+    -webkit-font-smoothing: antialiased;
+  }
+
+}
+
+@font-face {
+  font-family: "Open Sans:Italic";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("https://static.figma.com/font/OpenSans-Italic_wdth_wght__2") format("woff2");
+}
+
+@keyframes typewriter-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.typewriter-caret {
+  animation: typewriter-blink 1s steps(1) infinite;
+}
+
+/* Route-specific cursor colors with lighter counterparts for dark backgrounds. */
+:root {
+  --cursor-green: #19553c;
+  --cursor-blue: #2563eb;
+}
+
+.dark {
+  --cursor-green: #72b78f;
+  --cursor-blue: #79aaff;
+}
+
+/* Square stays at the pointer; thumbnail label sits to its right. */
+html.has-custom-cursor,
+html.has-custom-cursor * {
+  cursor: none !important;
+}
+
+.custom-cursor {
+  --cursor-color: var(--cursor-green);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2147483646;
+  display: grid;
+  width: 11.16px;
+  height: 11.16px;
+  place-items: center;
+  pointer-events: none;
+  opacity: 0;
+  color: var(--cursor-color);
+  background: var(--cursor-color);
+  transition:
+    width 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    height 240ms cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 180ms ease,
+    color 180ms ease,
+    opacity 160ms ease;
+  will-change: transform;
+}
+
+.custom-cursor[data-page="case-study"] {
+  --cursor-color: var(--cursor-blue);
+}
+
+.custom-cursor[data-mode="view"] {
+  width: 8px;
+  height: 8px;
+}
+
+.custom-cursor span {
+  position: absolute;
+  left: calc(100% + 8px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  white-space: nowrap;
+  font-size: 11.16px;
+  font-weight: 600;
+  color: var(--ink);
+  text-shadow: 0 1px 4px var(--page);
+  opacity: 0;
+  transition: opacity 140ms ease 70ms;
+}
+
+.custom-cursor[data-mode="view"] span {
+  opacity: 1;
+}
+
+.project-focus-blur {
+  filter: blur(6px) !important;
+  opacity: 0.48 !important;
+  pointer-events: none !important;
+  transition:
+    filter 480ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 480ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-focus-blur * {
+  pointer-events: none !important;
+}
+
+.project-focus-selected {
+  filter: none !important;
+  opacity: 1 !important;
+  pointer-events: auto !important;
+  z-index: 45;
+}
+
+.project-card-planet {
+  transition:
+    opacity 420ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 420ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.project-card-planet-hidden {
+  filter: blur(12px);
+  opacity: 0.3;
+}
+
+.project-focus-menu {
+  animation: project-menu-in 480ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.project-focus-menu > p {
+  animation: project-action-in 440ms cubic-bezier(0.16, 1, 0.3, 1) 40ms both;
+}
+
+.project-focus-menu .project-action-chip {
+  animation: project-action-in 440ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.project-focus-menu .project-action-chip:nth-child(1) {
+  animation-delay: 110ms;
+}
+
+.project-focus-menu .project-action-chip:nth-child(2) {
+  animation-delay: 170ms;
+}
+
+.project-focus-menu .project-action-chip:nth-child(3) {
+  animation-delay: 230ms;
+}
+
+.project-focus-menu.is-closing {
+  animation: none;
+}
+
+.project-focus-menu.is-closing > p {
+  animation: project-action-out 440ms cubic-bezier(0.7, 0, 0.84, 0) 40ms both;
+}
+
+.project-focus-menu.is-closing .project-action-chip {
+  animation: project-action-out 440ms cubic-bezier(0.7, 0, 0.84, 0) both;
+}
+
+.project-focus-menu.is-closing .project-action-chip:nth-child(1) {
+  animation-delay: 110ms;
+}
+
+.project-focus-menu.is-closing .project-action-chip:nth-child(2) {
+  animation-delay: 170ms;
+}
+
+.project-focus-menu.is-closing .project-action-chip:nth-child(3) {
+  animation-delay: 230ms;
+}
+
+.project-action-chip {
+  border: 1px solid var(--pill-border);
+  border-radius: 999px;
+  background: var(--pill);
+  padding: 7px 12px;
+  color: var(--ink);
+  font-size: 13px;
+  line-height: 1;
+  white-space: nowrap;
+  transition:
+    color 180ms ease,
+    background-color 180ms ease;
+}
+
+.project-action-chip:not(:disabled):hover {
+  color: var(--page);
+  background: var(--ink);
+}
+
+@keyframes project-menu-in {
+  from {
+    opacity: 0;
+    filter: blur(8px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes project-action-in {
+  from {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0);
+  }
+}
+
+@keyframes project-action-out {
+  from {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    filter: blur(10px);
+    transform: translateX(10px);
+  }
+}
+
+.projects-locked {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.projects-revealed {
+  visibility: visible;
+  opacity: 1;
+}
+
+.scroll-prompt {
+  position: fixed;
+  right: 0;
+  bottom: 20px;
+  left: 0;
+  z-index: 35;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  pointer-events: none;
+  color: var(--body);
+  font-size: 12px;
+  opacity: 0;
+  filter: blur(6px);
+  transform: translateY(5px);
+  transition:
+    opacity 420ms ease-out,
+    filter 420ms ease-out,
+    transform 420ms ease-out;
+}
+
+.scroll-prompt.is-visible {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html.has-custom-cursor,
+  html.has-custom-cursor * {
+    cursor: auto !important;
+  }
+  .custom-cursor {
+    display: none;
+  }
+}

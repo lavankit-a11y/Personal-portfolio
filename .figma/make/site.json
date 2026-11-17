@@ -1,0 +1,10 @@
+{
+  "description": "A clinical trial dashboard helps nurses track unfinished work, review lab data, and flag out-of-range values to reduce data entry time and errors.",
+  "robots": {
+    "index": false
+  },
+  "accessibility": {
+    "addBypassLinks": false,
+    "ignoreReducedMotion": false
+  }
+}
